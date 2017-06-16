@@ -17,23 +17,29 @@ fail () {
 
 install_packages () {
     for PKG in ${*}; do
-        if ! dpkg -l ${PKG} > /dev/null 2>&1; then
-            apt-get -y install ${PKG} || fail
+        if ! yum list installed ${PKG} > /dev/null 2>&1; then
+            yum -y install ${PKG} || fail
         fi
     done
-    apt-get update -y
+    yum update -y
 }
 
 install_bazel () {
-    BAZEL_DEB=bazel_${BAZEL_VER}-${OSTYPE}.deb
-    if ! dpkg -l bazel > /dev/null 2>&1; then
-        #wget https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VER/bazel-$BAZEL_VER-installer-$OSTYPE.sh
-        if [ ! -e ${BAZEL_DEB} ]; then
-            wget --no-check-certificate https://github.com/bazelbuild/bazel/releases/download/${BAZEL}_VER/${BAZEL_DEB} -O ${CACHE_DIR}/${BAZEL_DEB} || fail
-        fi
-        sudo dpkg -i ${CACHE_DIR}/${BAZEL_DEB} || fail
-    fi
+   pushd /var/tmp
+#   JAVA_HOME_PREV=$JAVA_HOME
+   export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk/
+   BAZEL_VER=0.4.5
+   wget --no-check-certificate https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VER/bazel-$BAZEL_VER-dist.zip || fail
+   unzip bazel-0.4.5-dist.zip || fail
+   chmod +x compile.sh
+   ./compile.sh
+   cp /var/tmp/output/bazel /usr/local/bin || fail
+   export PATH=/usr/local/bin:$PATH
+#   export JAVA_HOME=$JAVA_HOME_PREV
+   popd
+
 }
+
 
 ################################### Script ###################################
 
@@ -51,10 +57,10 @@ INSTALL_DIR=$(readlink -f "${2}")
 CACHE_DIR=${INSTALL_DIR}/cache
 
 # install required packages
-install_packages git autoconf build-essential automake libtool curl \
-                 make g++ unzip python-numpy swig \
-                 python-dev python-wheel openjdk-8-jdk \
-                 pkg-config zip zlib1g-dev wget libcupti-dev || fail
+install_packages wget make which findutils binutils gcc tar \
+       	  	 gzip zip unzip java-1.8.0-openjdk-devel \
+		 git clang make zlib-devel gcc-c++ swig \
+		 unzip libtool patch || fail
 install_bazel || fail
 
 
