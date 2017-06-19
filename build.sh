@@ -60,7 +60,7 @@ CACHE_DIR=${INSTALL_DIR}/cache
 install_packages wget make which findutils binutils gcc tar \
        	  	 gzip zip unzip java-1.8.0-openjdk-devel \
 		 git clang make zlib-devel gcc-c++ swig \
-		 unzip libtool patch || fail
+		 unzip libtool patch cmake || fail
 install_bazel || fail
 
 
