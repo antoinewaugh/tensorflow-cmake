@@ -107,6 +107,23 @@ cc_binary(
 )
 EOF
 
+export CC="/usr/bin/gcc"
+export CXX="/usr/bin/g++"
+export TEST_TMPDIR=/var/tmp/cvsupport
+export PYTHON_BIN_PATH=/apama_home/third_party/python/bin/python
+export PYTHON_LIB_PATH=/apama_home/third_party/python/lib/python2.7/site-packages
+export TF_NEED_JEMALLOC=1
+export TF_NEED_GCP=0
+export TF_NEED_HDFS=0
+export TF_NEED_MKL=0
+export TF_NEED_VERBS=0
+export TF_NEED_MPI=0
+export TF_NEED_CUDA=0
+export TF_ENABLE_XLA=0
+export CC_OPT_FLAGS="-march=native"
+export GCC_HOST_COMPILER_PATH=/usr/bin/gcc
+
+
 ./configure
 
 #expect configure_script.exp
@@ -140,10 +157,10 @@ rm -rf ${INSTALL_DIR}/include/google/tensorflow/third_party/avro
 # eigen.sh install <tensorflow-root> [<install-dir> <download-dir>]
 ${SCRIPT_DIR}/eigen.sh install "${BUILD_DIR}/tensorflow-github" "${INSTALL_DIR}" "${INSTALL_DIR}/cache"
 # eigen.sh generate installed <tensorflow-root> [<cmake-dir> <install-dir>]
-#${SCRIPT_DIR}/eigen.sh generate external "${BUILD_DIR}/tensorflow-github" "${INSTALL_DIR}/share/cmake" "${INSTALL_DIR}"
+${SCRIPT_DIR}/eigen.sh generate external "${BUILD_DIR}/tensorflow-github" "${INSTALL_DIR}/share/cmake" "${INSTALL_DIR}"
 
 # Install protobuf
 # protobuf.sh install <tensorflow-root> [<cmake-dir>]
 ${SCRIPT_DIR}/protobuf.sh install "${BUILD_DIR}/tensorflow-github" "${INSTALL_DIR}" "${INSTALL_DIR}/cache"
 # protobuf.sh generate installed <tensorflow-root> [<cmake-dir> <install-dir>]
-#${SCRIPT_DIR}/protobuf.sh generate installed "${BUILD_DIR}/tensorflow-github" "${INSTALL_DIR}/share/cmake" "${INSTALL_DIR}"
+${SCRIPT_DIR}/protobuf.sh generate installed "${BUILD_DIR}/tensorflow-github" "${INSTALL_DIR}/share/cmake" "${INSTALL_DIR}"
