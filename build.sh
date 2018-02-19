@@ -35,7 +35,7 @@ install_bazel () {
    ./compile.sh
    cp /var/tmp/output/bazel /usr/local/bin || fail
    export PATH=/usr/local/bin:$PATH
-#   export JAVA_HOME=$JAVA_HOME_PREV
+ #  export JAVA_HOME=$JAVA_HOME_PREV
    popd
 
 }
@@ -110,8 +110,8 @@ EOF
 export CC="/usr/bin/gcc"
 export CXX="/usr/bin/g++"
 export TEST_TMPDIR=/var/tmp/cvsupport
-export PYTHON_BIN_PATH=/apama_home/third_party/python/bin/python
-export PYTHON_LIB_PATH=/apama_home/third_party/python/lib/python2.7/site-packages
+export PYTHON_BIN_PATH=/usr/bin/python
+export PYTHON_LIB_PATH=/usr/lib64/python2.7/site-packages/
 export TF_NEED_JEMALLOC=1
 export TF_NEED_GCP=0
 export TF_NEED_HDFS=0
