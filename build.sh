@@ -26,16 +26,9 @@ install_packages () {
 
 install_bazel () {
    pushd /var/tmp
-#   JAVA_HOME_PREV=$JAVA_HOME
-   export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk/
-   BAZEL_VER=0.4.5
-   wget --no-check-certificate https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VER/bazel-$BAZEL_VER-dist.zip || fail
-   unzip bazel-0.4.5-dist.zip || fail
-   chmod +x compile.sh
-   ./compile.sh
-   cp /var/tmp/output/bazel /usr/local/bin || fail
-   export PATH=/usr/local/bin:$PATH
- #  export JAVA_HOME=$JAVA_HOME_PREV
+   wget https://github.com/bazelbuild/bazel/releases/download/0.5.4/bazel-0.5.4-installer-linux-x86_64.sh
+   chmod +x bazel-0.5.4-installer-linux-x86_64.sh 
+   ./bazel-0.5.4-installer-linux-x86_64.sh
    popd
 
 }
@@ -111,7 +104,7 @@ export CC="/usr/bin/gcc"
 export CXX="/usr/bin/g++"
 export TEST_TMPDIR=/var/tmp/cvsupport
 export PYTHON_BIN_PATH=/usr/bin/python
-export PYTHON_LIB_PATH=/usr/lib64/python2.7/site-packages/
+export PYTHON_LIB_PATH=/usr/lib/python2.7/site-packages
 export TF_NEED_JEMALLOC=1
 export TF_NEED_GCP=0
 export TF_NEED_HDFS=0
