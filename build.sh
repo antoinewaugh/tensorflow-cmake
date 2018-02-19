@@ -121,7 +121,7 @@ export GCC_HOST_COMPILER_PATH=/usr/bin/gcc
 
 #expect configure_script.exp
 #./configure < configure_answers.txt
-bazel build tensorflow:libtensorflow_all.so || fail
+/usr/local/bin/bazel build tensorflow:libtensorflow_all.so || fail
 
 # copy the library to the install directory
 cp bazel-bin/tensorflow/libtensorflow_all.so ${INSTALL_DIR}/lib || fail
