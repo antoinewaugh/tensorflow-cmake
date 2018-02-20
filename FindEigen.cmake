@@ -1,28 +1,22 @@
-# Finds the required directories to include Eigen. Since Eigen is
-# only header files, there is no library to locate, and therefore
-# no *_LIBRARIES variable is set.
-
-include(FindPackageHandleStandardArgs)
+include(ExternalProject)
 include(Eigen_VERSION)
-unset(EIGEN_FOUND)
 
-find_path(Eigen_INCLUDE_DIR
-        NAMES
-        ${Eigen_DIR}
-        ${Eigen_DIR}/unsupported
-        ${Eigen_DIR}/Eigen
-        HINTS
-        ${Eigen_INSTALL_DIR}/include/eigen)
+set(Eigen_INSTALL ${EXTERNAL_DIR}/include/eigen/${Eigen_DIR})
 
-# set Eigen_FOUND
-find_package_handle_standard_args(Eigen DEFAULT_MSG Eigen_INCLUDE_DIR)
+set(Eigen_INCLUDE_DIRS
+        ${PROJECT_SOURCE_DIR}/external/include/eigen
+        ${Eigen_INSTALL})
 
-# set external variables for usage in CMakeLists.txt
-if(EIGEN_FOUND)
-    set(Eigen_INCLUDE_DIRS ${Eigen_INCLUDE_DIR} ${Eigen_INCLUDE_DIR}/${Eigen_DIR})
-endif()
+ExternalProject_Add(Eigen
+        PREFIX ${PROJECT_SOURCE_DIR}/external/src/eigen
+        URL ${Eigen_URL}
+        URL_HASH ${Eigen_HASH}
+        DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
 
+        CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE:STRING=Release
+        -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
+        -DCMAKE_INSTALL_PREFIX:STRING=${Eigen_INSTALL}
+        -DINCLUDE_INSTALL_DIR:STRING=${Eigen_INSTALL})
 
-
-# hide locals from GUI
-mark_as_advanced(Eigen_INCLUDE_DIR)
+include_directories(${Eigen_INCLUDE_DIRS})
